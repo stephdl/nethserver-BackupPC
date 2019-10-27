@@ -1,5 +1,5 @@
 %define name nethserver-BackupPC
-%define version 1.1.4
+%define version 1.1.5
 %define release 1
 Name: %{name}
 Version: %{version}
@@ -17,6 +17,8 @@ Requires: BackupPC >= 3.1.0
 Requires: nethserver-httpd
 Requires: bzip2
 Requires: mod_authnz_pam
+Conflicts: BackupPC > 4.0.0
+Conflicts: nethserver-BackupPC4
 
 %description
 BackupPC is a high-performance, enterprise-grade system for backing up Linux
@@ -63,6 +65,9 @@ fi
 %postun
 
 %changelog
+* Sun Oct 27 2019 Stephane de Labrusse <stephdl@de-labrusse.fr> 1.1.5-1.ns7
+- Conflict BackuPC v4 and nethserver-BackupPC4
+
 * Fri Nov 24 2017 Stephane de Labrusse <stephdl@de-labrusse.fr> 1.1.4-1.ns7
 - Set the admin user of the system template to admin@domaiName
 
