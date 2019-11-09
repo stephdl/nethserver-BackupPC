@@ -1,5 +1,5 @@
 %define name nethserver-BackupPC
-%define version 1.1.5
+%define version 1.2.0
 %define release 1
 Name: %{name}
 Version: %{version}
@@ -32,11 +32,21 @@ This package contains specific configuration for Nethserver
 
 %build
 perl createlinks
+sed -i 's/_RELEASE_/%{version}/' %{name}.json
 
 %install
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/BackupPC/pc
 
 (cd root   ; /usr/bin/find . -depth -print | /bin/cpio -dump $RPM_BUILD_ROOT)
+
+mkdir -p %{buildroot}/usr/share/cockpit/%{name}/
+mkdir -p %{buildroot}/usr/share/cockpit/nethserver/applications/
+mkdir -p %{buildroot}/usr/libexec/nethserver/api/%{name}/
+cp -a manifest.json %{buildroot}/usr/share/cockpit/%{name}/
+cp -a logo.png %{buildroot}/usr/share/cockpit/%{name}/
+cp -a %{name}.json %{buildroot}/usr/share/cockpit/nethserver/applications/
+cp -a api/* %{buildroot}/usr/libexec/nethserver/api/%{name}/
+
 /bin/rm -f %{name}-%{version}-filelist
 %{genfilelist} $RPM_BUILD_ROOT \
 > %{name}-%{version}-filelist
@@ -65,6 +75,9 @@ fi
 %postun
 
 %changelog
+* Sat Nov 9 2019 Stephane de Labrusse <stephdl@de-labrusse.fr> 1.2.0-1.ns7
+- cockpit. added to legacy apps
+
 * Sun Oct 27 2019 Stephane de Labrusse <stephdl@de-labrusse.fr> 1.1.5-1.ns7
 - Conflict BackuPC v4 and nethserver-BackupPC4
 
@@ -174,4 +187,3 @@ fi
 - [3.0-0]
 - rpm package
 - script BackupPC_SME_remoteBackup to remotly backup the pool (to another UNIX host)
-
