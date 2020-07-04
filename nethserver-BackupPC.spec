@@ -1,5 +1,5 @@
 %define name nethserver-BackupPC
-%define version 1.2.1
+%define version 1.2.2
 %define release 1
 Name: %{name}
 Version: %{version}
@@ -74,8 +74,13 @@ if [[ ! -e /var/lib/BackupPC/.ssh/id_rsa ]]; then
 fi
 
 %postun
+/usr/bin/rm -f /etc/httpd/conf.d/BackupPC.conf
+/usr/bin/systemctl reload httpd
 
 %changelog
+* Sat Jul 04 2020 stephane de Labrusse <stephdl@de-labrusse.fr> 1.2.2-1
+- Remove http templates after rpm removal
+
 * Thu Mar 05 2020  stephane de Labrusse <stephdl@de-labrusse.fr> 1.2.1-1.ns7
 - Fix bad sudoers permission
 
